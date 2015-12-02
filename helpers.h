@@ -67,9 +67,9 @@ void driveDistance(float speed, float distance)
  */
 void leftMotor(float speed)
 {
-  motor[motorLeft] = speed;
+  moveMotor(motorLeft, speed);
   // TODO: uncomment the next line for quad motor configuration
-  // motor[motorLeft2] = speed;
+  // moveMotor(motorLeft2, speed);
 }
 
 /**
@@ -78,9 +78,19 @@ void leftMotor(float speed)
  */
 void rightMotor(float speed)
 {
-  motor[motorLeft] = speed;
+  moveMotor(motorRight, speed);
   // TODO: uncomment the next line for quad motor configuration
-  // motor[motorLeft2] = speed;
+  // moveMotor(motorRight2, speed);
+}
+
+/**
+ * set an arbitrary motor to drive at a given speed
+ * tMotor mot the motor to set
+ * float speed from -1.0 to 1.0
+ */
+void moveMotor(tMotor mot, float speed))
+{
+  motor[mot] = speed;
 }
 
 /**

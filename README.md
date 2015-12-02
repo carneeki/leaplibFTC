@@ -3,6 +3,19 @@
 A library for LEAP Robotics by Adam Carmichael <carneeki@carneeki.net> authored
 in spare time.
 
+## Configuration
+Configuration tells the programming language which motors have names, and where
+they are plugged in.
+
+RobotC typically likes to include the configuration in every program. This is
+actually a bad programming practice, because we have to repeat the configuration
+in every program, and it also means if we update the configuration in one place
+(eg teleop) we have to also update it in autonomous. This is annoying, and
+breaks the DRY (Don't Repeat Yourself) principle.
+
+By storing the configuration in `config.h`, we only need to open the file and
+run through the configuration wizard once each time we make a change.
+
 ## Autonomous Code
 Place code in `autonomous.c`, specifically, look for a line to the effect of
 ```c

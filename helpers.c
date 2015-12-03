@@ -2,13 +2,40 @@
 
 /**
  * Drive at a speed for a time (specified in milliseconds)
+ * int speed from -100 to 100
+ * int millis number of milliseconds to drive for
  */
-void driveTime(float speed, int millis)
+void driveTime(int speed, int millis)
 {
-  leftMotor(speed);
-  rightMotor(speed);
+  float kLag = 0.9;
 
-  wait1Msec(millis);
+  // zero encoder values to ensure driving in a straight line
+  nMotorEncoder[motorLeft] = 0;
+  nMotorEncoder[motorRight] = 0;
+
+  clearTimer(T1);
+  while(time1[T1] < millis)
+  {
+    if(abs(nMotorEncoder[motorLeft]) < abs(nMotorEncoder[motorRight]))
+    {
+      // if left motor is too slow
+      leftMotor(speed);
+      rightMotor(speed * kLag);
+    }
+    else if(abs(nMotorEncoder[motorRight]) < abs(nMotorEncoder[motorLeft]))
+    {
+      // if right motor is too slow
+      leftMotor(speed * kLag);
+      rightMotor(speed);
+    }
+    else
+    {
+      leftMotor(speed);
+      rightMotor(speed);
+    }
+
+    wait1Msec(5);
+  }
 
   // stop motors
   leftMotor(0);
@@ -31,13 +58,13 @@ void driveDistance(float speed, float distance)
   // drive while the current distance is less than the target distance
   while(currentDistance <= distance)
   {
-    if(nMotorEncoder[motorLeft] < nMotorEncoder[motorRight])
+    if(abs(nMotorEncoder[motorLeft]) < abs(nMotorEncoder[motorRight]))
     {
       // if left motor is too slow
       leftMotor(speed);
       rightMotor(speed * kLag);
     }
-    else if(nMotorEncoder[motorRight] < nMotorEncoder[motorLeft])
+    else if(abs(nMotorEncoder[motorRight]) < abs(nMotorEncoder[motorLeft]))
     {
       // if right motor is too slow
       leftMotor(speed * kLag);
@@ -50,7 +77,7 @@ void driveDistance(float speed, float distance)
     }
 
     wait1Msec(5); // wait 5 millis to allow encoders to update
-    currentDistance = (nMotorEncoder[motorLeft] + nMotorEncoder[motorRight])/2;
+    currentDistance = (abs(nMotorEncoder[motorLeft]) + abs(nMotorEncoder[motorRight]))/2;
   }
 
   // stop motors
@@ -60,9 +87,9 @@ void driveDistance(float speed, float distance)
 
 /**
  * set left motor(s) to drive at a given speed
- * float speed from -1.0 to 1.0
+ * int speed from -100 to 100
  */
-void leftMotor(float speed)
+void leftMotor(int speed)
 {
   moveMotor(motorLeft, speed);
   // TODO: uncomment the next line for quad motor configuration
@@ -71,9 +98,9 @@ void leftMotor(float speed)
 
 /**
  * set right motor(s) to drive at a given speed
- * float speed from -1.0 to 1.0
+ * int speed from -100 to 100
  */
-void rightMotor(float speed)
+void rightMotor(int speed)
 {
   moveMotor(motorRight, speed);
   // TODO: uncomment the next line for quad motor configuration
@@ -83,19 +110,19 @@ void rightMotor(float speed)
 /**
  * set an arbitrary motor to drive at a given speed
  * tMotor mot the motor to set
- * float speed from -1.0 to 1.0
+ * int speed from -100 to 100
  */
-void moveMotor(tMotor mot, float speed)
+void moveMotor(tMotor mot, int speed)
 {
   motor[mot] = speed;
 }
 
 /**
  * pivot clockwise at a given speed for a given time (millis)
- * float speed from -1.0 to 1.0
+ * float speed from -100 to 100
  * int millis number of milliseconds
  */
-void pivot(float speed, int millis)
+void pivot(int speed, int millis)
 {
   leftMotor(speed);
   rightMotor(-speed);

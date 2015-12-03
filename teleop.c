@@ -1,10 +1,8 @@
 #include "config.h"                   // Motor and servo configuration
-#include "helpers.h"                  // Helper functions
+#include "helpers.c"                  // Helper functions
 
 #include "JoystickDriver.c"           // Include file to "handle" the Bluetooth
                                       // messages.
-#include "leapRoboticsTeleopHeader.h" // Include file to provide basic teleop
-                                      // functions.
 
 /**
  * initializeRobot zero out sensors, and set servos to starting positions.

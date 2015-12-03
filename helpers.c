@@ -116,5 +116,3 @@ void servoAngle(TServoIndex srv, int angle, int max)
 {
   servo[srv] = (int) (angle/max) * 255;
 }
-
-#endif
